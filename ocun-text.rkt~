@@ -1,0 +1,9 @@
+#lang racket
+
+(provide ocun-text)
+
+(define (ocun-text f)
+  (with-input-from-string f
+    (lambda ()
+      (for ([line (in-lines)])
+        (printf "~a " line)))))
