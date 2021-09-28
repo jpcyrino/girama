@@ -1,8 +1,15 @@
 #lang racket
-
+(require "sentence.rkt")
 (provide ocun-text)
 
+;; Contract: ocun-text string -> list
 
+;; Purpose: imports data from an ocun text file into the girama ecosystem
+
+;; Example: (ocun-text "daaichin.txt") will yield a list of the sentence struct based on
+;;          the data from the daaichin.txt file.
+
+;; Definition:
 (define (ocun-text txt-file)
   (let ([sentence-vector (text-file-line-to-vector txt-file)])
     (vector-multiple-of-3? sentence-vector)
@@ -29,12 +36,6 @@
                (sentence
                 (vector-ref v acc) (vector-ref v (+ acc 1)) (vector-ref v (+ acc 2))) l)))))
 
-(module+ test
-  (require rackunit)
-  (check-equal? (vector-to-sentence-struct '#(1 2 3 4 5 6))
-                (list (sentence 1 2 3) (sentence 4 5 6))))
-
-
 ;; Auxiliary functions
 (define (vector-multiple-of-3? l)
   (when (not (multiple-of-3? (vector-length l)))
@@ -43,7 +44,9 @@
 (define (multiple-of-3? n)
   (= (remainder n 3) 0))
 
-(struct sentence (language gloss translation) #:transparent)
-
-
+;; Tests:
+(module+ test
+  (require rackunit)
+  (check-equal? (vector-to-sentence-struct '#(1 2 3 4 5 6))
+                (list (sentence 1 2 3) (sentence 4 5 6))))
 
